@@ -1,0 +1,37 @@
+﻿@page "/"
+
+@using BlazorBindings.Maui;
+@using HybridAppBarcodeScanner.Native.Pages
+@using System.Text.Json;
+@using ZXing.Net.Maui;
+
+<h1>Barcode Scanner</h1>
+
+<p>(web page)</p>
+
+<button class="btn btn-primary" @onclick="Scan">Scan Barcode</button>
+
+@if (_barcode is not null)
+{
+    <p>Value: @_barcode.Value</p>
+    <p>Format: @_barcode.Format</p>
+    <p>Metadata: <pre>@_metadataJson</pre></p>
+}
+
+@code {
+    [Inject] INavigation Navigation { get; set; }
+
+    BarcodeResult _barcode;
+    string _metadataJson;
+
+    async Task Scan()
+    {
+        await Navigation.PushAsync(@<BarcodeScanner BarcodeDetected="BarcodeDetected" />);
+    }
+
+    void BarcodeDetected(BarcodeResult barcode)
+    {
+        _barcode = barcode;
+        _metadataJson = JsonSerializer.Serialize(_barcode?.Metadata, new JsonSerializerOptions { WriteIndented = true });
+    }
+}

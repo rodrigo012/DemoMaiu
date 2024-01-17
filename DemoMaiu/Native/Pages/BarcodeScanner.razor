@@ -1,0 +1,90 @@
+﻿@using BlazorBindings.Maui.Elements
+@using BlazorBindings.Maui.Elements.ZXing.Net
+@using OliautoShared.DTOs.Repuestos.Logistica
+@using System.Net.Http.Headers
+@using ZXing.Net.Maui;
+@using System.Net.Http.Json; 
+
+
+<ContentPage Title="Scanner (native page)" BackgroundColor="Colors.Black">
+    <Grid ColumnDefinitions="*,*" RowDefinitions="*,Auto">
+
+        <CameraBarcodeReaderView IsTorchOn="_isTorchEnabled"
+                                 CameraLocation="_cameraLocation"
+                                 Options="_options"
+                                 OnBarcodesDetected="BarcodesDetected"
+                                 HorizontalOptions="LayoutOptions.Fill"
+                                 Grid.ColumnSpan="2" />
+
+        <Button Text="Toggle Torch"
+                OnClick="ToggleTorch"
+                Margin="6"
+                Grid.Row="1"
+                Grid.Column="0" />
+
+        <Button Text="Flip"
+                OnClick="FlipCamera"
+                Margin="6"
+                Grid.Row="1"
+                Grid.Column="1" />
+    </Grid>
+</ContentPage>
+
+@code {
+    [Parameter] public EventCallback<BarcodeResult> BarcodeDetected { get; set; }
+
+    [Inject] INavigation Navigation { get; set; }
+
+    CameraLocation _cameraLocation;
+    bool _isTorchEnabled = false;
+
+    BarcodeReaderOptions _options = new()
+        {
+            AutoRotate = true,
+            Multiple = false
+        };
+
+    void FlipCamera()
+    {
+        _cameraLocation = _cameraLocation == CameraLocation.Rear ? CameraLocation.Front : CameraLocation.Rear;
+    }
+
+    void ToggleTorch()
+    {
+        _isTorchEnabled = !_isTorchEnabled;
+    }
+
+    async Task BarcodesDetected(BarcodeDetectionEventArgs args)
+    {
+        var result = args.Results[0];
+        await RecibirCaja(result);
+        await BarcodeDetected.InvokeAsync(result);
+        await Navigation.PopAsync();
+    }
+    public async Task RecibirCaja(BarcodeResult result)
+    {
+        try
+        {
+            
+            var httpClient = new HttpClient();
+            
+            RecepcionCajaParamDTO recepcionCaja = new RecepcionCajaParamDTO();   
+            recepcionCaja.UserId = "4b5f3e0a-d2d1-49e8-8a92-3372545aed5c";
+            recepcionCaja.NroCaja = result.Value;
+            
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "your_token");
+
+            var response = await httpClient.PostAsJsonAsync("http://oliauto.dyndns.info:2091/api/Logistica/RecepcionarCaja", recepcionCaja);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                Console.WriteLine("error");
+            }
+            Console.WriteLine("Exito");
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
+    }
+}

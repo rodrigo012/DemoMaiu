@@ -1,0 +1,27 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34408.163
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoMaiu", "DemoMaiu\DemoMaiu.csproj", "{CAB48068-C1B5-444E-97F0-E0569727CABD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CAB48068-C1B5-444E-97F0-E0569727CABD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CAB48068-C1B5-444E-97F0-E0569727CABD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CAB48068-C1B5-444E-97F0-E0569727CABD}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{CAB48068-C1B5-444E-97F0-E0569727CABD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CAB48068-C1B5-444E-97F0-E0569727CABD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CAB48068-C1B5-444E-97F0-E0569727CABD}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6017BCC3-7F98-40A7-9F58-878EF9BBDE9E}
+	EndGlobalSection
+EndGlobal
